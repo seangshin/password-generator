@@ -3,21 +3,19 @@ var generateBtn = document.querySelector("#generate");
 
 //Declares an object called password and stores its criteria
 var password = {
+  resultSize: null,
+  resultLower:null,
+  resultUpper: null,
+  resultNumeric: null,
+  resultSpecial: null,
   characters: null,
   lowercase: null,
   uppercase: null,
   numeric: null,
   special: null,
-  construct: "",
+  build: [],
+  result: null,
 };
-
-/*
-//Declares strings of characters
-var lowercaseChar = "abcdefghijklmnopqrstuvwxyz";
-var uppercaseChar = lowercaseChar.toUpperCase();
-var numericChar = "0123456789";
-var specialChar = "~!@#$%^&*()-_=+?<>/[]";
-*/
 
 //Generate password
 function generatePassword() {
@@ -38,8 +36,8 @@ function generatePassword() {
       return true;
     }
   } 
-  var resultSize = getSize();
-  if (resultSize===false) {
+  password.resultSize = getSize();
+  if (password.resultSize===false) {
     return;
   }
   //Function which prompts user to include lower case. Stores input to password.lowercase. Returns true or false to determine if input meets requirements.
@@ -49,18 +47,16 @@ function generatePassword() {
       window.alert("Cancelled");
       return false;
     } else if (password.lowercase==="y") {
-      window.alert("You selected yes.");
       return true;
     } else if (password.lowercase==="n") {
-      window.alert("You selected no.");
       return true;
     } else {
       window.alert("Response not understood.");
       return false;
     }
   }
-  var resultLower = getLower();
-  if (resultLower===false) {
+  password.resultLower = getLower();
+  if (password.resultLower===false) {
     return;
   }
   //Function which prompts user to include upper case. Stores input to password.uppercase. Returns true or false to determine if input meets requirements.
@@ -70,18 +66,16 @@ function generatePassword() {
       window.alert("Cancelled");
       return false;
     } else if (password.uppercase==="y") {
-      window.alert("You selected yes.");
       return true;
     } else if (password.uppercase==="n") {
-      window.alert("You selected no.");
       return true;
     } else {
       window.alert("Response not understood.");
       return false;
     }
   }
-  var resultUpper = getUpper();
-  if (resultUpper===false) {
+  password.resultUpper = getUpper();
+  if (password.resultUpper===false) {
     return;
   }
   //Function which prompts user to include numierc. Stores input to password.numeric. Returns true or false to determine if input meets requirements.
@@ -92,18 +86,16 @@ function generatePassword() {
       window.alert("Cancelled");
       return false;
     } else if (password.numeric==="y") {
-      window.alert("You selected yes.");
       return true;
     } else if (password.numeric==="n") {
-      window.alert("You selected no.");
       return true;
     } else {
       window.alert("Response not understood.");
       return false;
     }
   }
-  var resultNumeric = getNumeric();
-  if (resultNumeric===false) {
+  password.resultNumeric = getNumeric();
+  if (password.resultNumeric===false) {
     return;
   }
   //Function which prompts user to include special. Stores input to password.special. Returns true or false to determine if input meets requirements.
@@ -114,27 +106,68 @@ function generatePassword() {
       window.alert("Cancelled");
       return false;
     } else if (password.special==="y") {
-      window.alert("You selected yes.");
       return true;
     } else if (password.special==="n") {
-      window.alert("You selected no.");
       return true;
     } else {
       window.alert("Response not understood.");
       return false;
     }
   }
-  var resultSpecial = getSpecial();
-  if (resultSpecial===false) {
+  password.resultSpecial = getSpecial();
+  if (password.resultSpecial===false) {
     return;
   }
-  
+ 
+  function addCharacter() {
+    var lowercaseChar = "abcdefghijklmnopqrstuvwxyz";
+    var uppercaseChar = lowercaseChar.toUpperCase();
+    var numericChar = "0123456789";
+    var specialChar = "~!@#$%^&*()-_=+?<>/[]";
+    var buildChar = [];
+
+    //If statements to define the possible character choices based on criteria defined by the user
+    if (password.lowercase==="y") {
+      buildChar = buildChar + lowercaseChar;
+      window.alert("This is a message at line 147.")//debug
+    }
+    if (password.uppercase==="y") {
+      buildChar = buildChar +uppercaseChar;
+      window.alert("This is a message at line 150.")//debug
+    }
+    if (password.numeric==="y") {
+      buildChar = buildChar + numericChar;
+      window.alert("This is a message at line 153.")//debug
+    }
+    if (password.special==="y") {
+      buildChar = buildChar + specialChar;
+      window.alert("This is a message at line 156.")//debug
+    }
+    window.alert("Possible choices: " + buildChar);//debugger
+
+    //Splits string into an array to assign an index to each character
+    var buildCharArray = buildChar.split("");
+   
+    //Iteration to build password array
+    for (var i=0; i<password.characters; i++) {
+      var randomIndex = Math.floor(Math.random() * buildCharArray.length); //Generates random index within build character array size
+      password.build.push(buildCharArray[randomIndex]);//Pushes the randomly chosen character into the password build array
+
+      
+    }
+    //Joins array into string
+    var passwordbuildString = password.build.join("");
+    window.alert(passwordbuildString);
+    return passwordbuildString;
+  }
+  //Calls function to generate password based on criteria and assigns to result property within the password object
+  password.result = addCharacter();
 }
 
 
 // Write password to the #password input
 function writePassword() {
-  var password = generatePassword();
+  password.result = generatePassword();
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
