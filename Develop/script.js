@@ -1,8 +1,6 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-
-
 //Generate password
 function generatePassword() {
   //Declares an object called password and stores its criteria
@@ -185,10 +183,6 @@ function generatePassword() {
         }
       }
     }
-    console.log("number of lower: " + lowerCount);//debug
-      console.log("number of upper: " + upperCount);//debug
-      console.log("number of numeric: " + numericCount);//debug
-      console.log("number of special: " + specialCount);//debug
 
     //Joins array into string
     var passwordbuildString = password.build.join("");
@@ -199,14 +193,11 @@ function generatePassword() {
   return addCharacter(); 
 }
 
-
 // Write password to the #password input
 function writePassword() {
   var pass = generatePassword();
   var passwordText = document.querySelector("#password");
-
   passwordText.value = pass;
-
 }
 
 // Add event listener to generate button
