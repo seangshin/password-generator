@@ -1,8 +1,12 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-//Declares an object called password and stores its criteria
-var password = {
+
+
+//Generate password
+function generatePassword() {
+  //Declares an object called password and stores its criteria
+  var password = {
   resultSize: null,
   resultLower:null,
   resultUpper: null,
@@ -14,11 +18,7 @@ var password = {
   numeric: null,
   special: null,
   build: [],
-  result: null,
-};
-
-//Generate password
-function generatePassword() {
+  };
   //Function which prompts user to enter number of characters from 8 to 128. Stores input to password.characters. Returns true or false to determine if input meets requirements.
   function getSize() {
     password.characters = window.prompt("Choose how many characters you would like your password (8 to 128 characters): ");
@@ -32,8 +32,11 @@ function generatePassword() {
     } else if (password.characters<8) {
       window.alert("Not enough characters. Try again.");
       return false;
-    } else {
+    } else if (password.characters>=8 && password.characters<=128) {
       return true;
+    } else {
+      window.alert("Not a number. Try again.");
+      return false;
     }
   } 
   password.resultSize = getSize();
@@ -128,54 +131,81 @@ function generatePassword() {
  //Function used to construct a password based on the user defined criteria from above functions
   function addCharacter() {
     //Declares local variables used to categorize password critera and an array to construct the password
-    var lowercaseChar = "abcdefghijklmnopqrstuvwxyz";
-    var uppercaseChar = lowercaseChar.toUpperCase();
-    var numericChar = "0123456789";
-    var specialChar = "~!@#$%^&*()-_=+?<>/[]";
-    var buildChar = [];
-
-    //If statements to define the possible character choices based on criteria defined by the user
-    if (password.lowercase==="y") {
-      buildChar = buildChar + lowercaseChar;
-    }
-    if (password.uppercase==="y") {
-      buildChar = buildChar +uppercaseChar;
-    }
-    if (password.numeric==="y") {
-      buildChar = buildChar + numericChar;
-    }
-    if (password.special==="y") {
-      buildChar = buildChar + specialChar;
-    }
+    var allChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789~!@#$%^&*()-_=+?<>/[]";
+    var lowerCount = 0;
+    var upperCount = 0;
+    var numericCount = 0;
+    var specialCount = 0;
+    var randomIndex;
 
     //Splits string into an array to assign an index to each character
-    var buildCharArray = buildChar.split("");
+    var allCharArray = allChar.split("");
    
-    //Iteration to build password and store into array from the password object
-    for (var i=0; i<password.characters; i++) {
-      var randomIndex = Math.floor(Math.random() * buildCharArray.length); //Generates random index within build character array size
-      password.build.push(buildCharArray[randomIndex]);//Pushes the randomly chosen character into the password build array
+    //While loop iteration used to build password and store into array from the password object
+    while (password.build.length < password.characters) {
+      randomIndex = Math.floor(Math.random() * allCharArray.length); //Generates random index within build character array size
 
-      //Add conditions to check if all criteria used at least once
+      //If statements to check which criteria the random index falls under and keep count
+      if (password.lowercase==="y" && randomIndex>=0 && randomIndex<=25) {
+        password.build.push(allCharArray[randomIndex]);//Pushes the randomly chosen character into the password build array
+        lowerCount++;
+      }
+      if (password.uppercase==="y" && randomIndex>=26 && randomIndex<=51) {
+        password.build.push(allCharArray[randomIndex]);//Pushes the randomly chosen character into the password build array
+        upperCount++;
+      }
+      if (password.numeric==="y" && randomIndex>=52 && randomIndex<=61) {
+        password.build.push(allCharArray[randomIndex]);//Pushes the randomly chosen character into the password build array
+        numericCount++;
+      }
+      if (password.special==="y" && randomIndex>=62 && randomIndex<=82) {
+        password.build.push(allCharArray[randomIndex]);//Pushes the randomly chosen character into the password build array
+        specialCount++;
+      }
+
+      //If statements to check if the specified criteria was used at least once, otherwise reset password and try building again
+      if(password.build.length === password.characters -1){
+        if (password.lowercase==="y" && lowerCount===0){
+          password.build = [];
+        }
+        if (password.uppercase==="y" && upperCount===0){
+          password.build = [];
+        }
+        if (password.numeric==="y" && numericCount===0){
+          password.build = [];
+        }
+        if (password.special==="y" && specialCount===0){
+          password.build = [];
+        }
+        if (password.build.length===0){
+          lowerCount=0;
+          upperCount=0;
+          numericCount=0;
+          specialCount=0;
+        }
+      }
     }
+    console.log("number of lower: " + lowerCount);//debug
+      console.log("number of upper: " + upperCount);//debug
+      console.log("number of numeric: " + numericCount);//debug
+      console.log("number of special: " + specialCount);//debug
 
     //Joins array into string
     var passwordbuildString = password.build.join("");
 
-    window.alert(passwordbuildString);
     return passwordbuildString;//Returns the generated password
   }
-  //Calls function to generate password based on criteria and assigns to result property within the password object
-  password.result = addCharacter();
+  //Returns the value from the addCharacter function used to generate password based on criteria
+  return addCharacter(); 
 }
 
 
 // Write password to the #password input
 function writePassword() {
-  password.result = generatePassword();
+  var pass = generatePassword();
   var passwordText = document.querySelector("#password");
 
-  passwordText.value = password;
+  passwordText.value = pass;
 
 }
 
