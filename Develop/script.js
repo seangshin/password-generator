@@ -24,13 +24,13 @@ function generatePassword() {
     password.characters = window.prompt("Choose how many characters you would like your password (8 to 128 characters): ");
     // If user pressed Cancel, send alert that it is cancelled and end function
     if (!password.characters) {
-      window.alert("Cancelled");
+      window.alert("Cancelled.");
       return false;
     } else if (password.characters>128) {
-      window.alert("Too many characters.");
+      window.alert("Too many characters. Try again.");
       return false;;
     } else if (password.characters<8) {
-      window.alert("Not enough characters.");
+      window.alert("Not enough characters. Try again.");
       return false;
     } else {
       return true;
@@ -44,14 +44,14 @@ function generatePassword() {
   function getLower() {
     password.lowercase = window.prompt("Would you like your password to include lowercase characters? (y/n)");
     if (!password.lowercase) {
-      window.alert("Cancelled");
+      window.alert("Cancelled.");
       return false;
     } else if (password.lowercase==="y") {
       return true;
     } else if (password.lowercase==="n") {
       return true;
     } else {
-      window.alert("Response not understood.");
+      window.alert("Response not understood. Try again.");
       return false;
     }
   }
@@ -63,14 +63,14 @@ function generatePassword() {
   function getUpper() {
     password.uppercase = window.prompt("Would you like your password to include uppercase characters? (y/n)");
     if (!password.uppercase) {
-      window.alert("Cancelled");
+      window.alert("Cancelled.");
       return false;
     } else if (password.uppercase==="y") {
       return true;
     } else if (password.uppercase==="n") {
       return true;
     } else {
-      window.alert("Response not understood.");
+      window.alert("Response not understood. Try again.");
       return false;
     }
   }
@@ -83,14 +83,14 @@ function generatePassword() {
     password.numeric = window.prompt("Would you like your password to include numeric characters? (y/n)");
     // If user pressed Cancel, send alert that it is cancelled and end function
     if (!password.numeric) {
-      window.alert("Cancelled");
+      window.alert("Cancelled.");
       return false;
     } else if (password.numeric==="y") {
       return true;
     } else if (password.numeric==="n") {
       return true;
     } else {
-      window.alert("Response not understood.");
+      window.alert("Response not understood. Try again.");
       return false;
     }
   }
@@ -103,14 +103,14 @@ function generatePassword() {
     password.special = window.prompt("Would you like your password to include special characters? (y/n)");
     // If user pressed Cancel, send alert that it is cancelled and end function
     if (!password.special) {
-      window.alert("Cancelled");
+      window.alert("Cancelled.");
       return false;
     } else if (password.special==="y") {
       return true;
     } else if (password.special==="n") {
       return true;
     } else {
-      window.alert("Response not understood.");
+      window.alert("Response not understood. Try again.");
       return false;
     }
   }
@@ -118,8 +118,16 @@ function generatePassword() {
   if (password.resultSpecial===false) {
     return;
   }
- 
+
+  //Validate user input to ensure at least one character type is selected
+  if (password.lowercase==="n" && password.uppercase==="n" && password.numeric==="n" && password.special==="n"){
+    window.alert("You did not select any criteria. Try again.")
+    return;
+  }
+
+ //Function used to construct a password based on the user defined criteria from above functions
   function addCharacter() {
+    //Declares local variables used to categorize password critera and an array to construct the password
     var lowercaseChar = "abcdefghijklmnopqrstuvwxyz";
     var uppercaseChar = lowercaseChar.toUpperCase();
     var numericChar = "0123456789";
@@ -129,36 +137,33 @@ function generatePassword() {
     //If statements to define the possible character choices based on criteria defined by the user
     if (password.lowercase==="y") {
       buildChar = buildChar + lowercaseChar;
-      window.alert("This is a message at line 147.")//debug
     }
     if (password.uppercase==="y") {
       buildChar = buildChar +uppercaseChar;
-      window.alert("This is a message at line 150.")//debug
     }
     if (password.numeric==="y") {
       buildChar = buildChar + numericChar;
-      window.alert("This is a message at line 153.")//debug
     }
     if (password.special==="y") {
       buildChar = buildChar + specialChar;
-      window.alert("This is a message at line 156.")//debug
     }
-    window.alert("Possible choices: " + buildChar);//debugger
 
     //Splits string into an array to assign an index to each character
     var buildCharArray = buildChar.split("");
    
-    //Iteration to build password array
+    //Iteration to build password and store into array from the password object
     for (var i=0; i<password.characters; i++) {
       var randomIndex = Math.floor(Math.random() * buildCharArray.length); //Generates random index within build character array size
       password.build.push(buildCharArray[randomIndex]);//Pushes the randomly chosen character into the password build array
 
-      
+      //Add conditions to check if all criteria used at least once
     }
+
     //Joins array into string
     var passwordbuildString = password.build.join("");
+
     window.alert(passwordbuildString);
-    return passwordbuildString;
+    return passwordbuildString;//Returns the generated password
   }
   //Calls function to generate password based on criteria and assigns to result property within the password object
   password.result = addCharacter();
