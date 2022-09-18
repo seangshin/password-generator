@@ -2,7 +2,7 @@
 
 ## Description
 
-The motivation of this project is to build a web application that generates a password based on the criteria defined by the user. This exercise is good practice for utilizing JavaScript to build robust algorithms which meet certain requirements. This activity also engages in the core skills of CSS and how to design creative, responsive webpages. 
+The motivation of this project is to build a web application that generates a password based on the criteria defined by the user. This exercise is good practice for utilizing JavaScript to build robust algorithms which meet certain requirements. The key concepts used in this activity are the document object model (DOM), event listeners, objects, and methods.
 
 ![](assets/screenshot.JPG)
 Link to Website: https://seangshin.github.io/password-generator/
